@@ -77,7 +77,19 @@ WSGI_APPLICATION = 'ruratec_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ruratec_db',
+        'USER': 'postgres',
+        'PASSWORD': 'ruratec',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'OPTIONS': {
+            'client_encoding': 'UTF8',
+        },
+    }
+}
 
 
 # Password validation
