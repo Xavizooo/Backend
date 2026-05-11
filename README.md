@@ -1,183 +1,130 @@
-# 🌱 Ruratec — Backend
+Perfecto, aquí tienes la estructura organizada para el **Backend** de **RURATEC**, manteniendo la coherencia con el documento anterior:
 
-API REST de **Ruratec**, plataforma que conecta agricultores con comerciantes. Gestiona usuarios, publicación de productos, procesamiento de pagos y el cobro de comisiones del 4% por transacción.
+# 🌱 RURATEC — Backend
 
----
+## Descripción
 
-## 🚀 Tecnologías
+Esta es la API REST de **Ruratec**, el motor lógico que permite la conexión entre el campo y el comercio. Se encarga de la gestión de identidades (agricultores y comerciantes), el ciclo de vida de los productos agrícolas, la generación de enlaces de contacto directo vía WhatsApp y la lógica financiera para el procesamiento de pagos, incluyendo el cálculo automático de la comisión del 4% por transacción.
 
-- [Python 3.x](https://www.python.org/)
-- [Django](https://www.djangoproject.com/) / [Django REST Framework](https://www.django-rest-framework.org/)
-- JWT — Autenticación con tokens
-- PostgreSQL / SQLite — Base de datos
-- WhatsApp API — Integración para contacto entre usuarios
+## Integrantes
 
----
+* Luis Danilo Martinez Cañon
+* Andres Felipe Diaz Barbosa
+* Hector Ivan Amado Betancur
+* Javier Andres Torres Sanchez
+* Juan David Ducuara Santa
 
-## 📋 Requisitos previos
+## Tecnologías utilizadas
 
-- Python `>= 3.10`
-- pip
-- PostgreSQL (para producción) o SQLite (para desarrollo)
-- Entorno virtual (`venv` o `virtualenv`)
+* **Lenguaje:** Python 3.x
+* **Framework:** Django / Django REST Framework (DRF)
+* **Base de datos:** PostgreSQL (Producción) / SQLite (Desarrollo)
+* **Librerías principales:**
+* **Simple JWT:** Para autenticación segura basada en tokens.
+* **CORS Headers:** Para permitir la conexión con el frontend.
+* **WhatsApp API Integration:** Para la comunicación entre usuarios.
 
----
 
-## ⚙️ Instalación
 
+## Requisitos previos
+
+* **Python** `>= 3.10`
+* **pip** (gestor de paquetes de Python)
+* **PostgreSQL** instalado y configurado.
+* Herramienta para entornos virtuales (`venv`).
+
+## Instalación
+
+1. **Clonar el repositorio:**
 ```bash
-# 1. Clonar el repositorio
 git clone https://github.com/Xavizooo/Backend.git
 cd Backend
 
-# 2. Crear y activar entorno virtual
-python -m venv venv
-source venv/bin/activate        # Linux / Mac
-venv\Scripts\activate           # Windows
-
-# 3. Instalar dependencias
-pip install -r requirements.txt
-
-# 4. Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tus credenciales
 ```
 
-### Variables de entorno
 
-Crea un archivo `.env` en la raíz del proyecto:
-
-```env
-SECRET_KEY=tu_clave_secreta_aqui
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1
-
-# Base de datos
-DATABASE_URL=postgresql://usuario:contraseña@localhost:5432/ruratec_db
-
-# JWT
-JWT_SECRET_KEY=tu_jwt_secret
-
-# Pasarela de pagos
-PAYMENT_API_KEY=tu_api_key
-COMMISSION_RATE=0.04
-
-# WhatsApp
-WHATSAPP_BASE_URL=https://wa.me/
-```
-
----
-
-## ▶️ Ejecución
+2. **Crear y activar el entorno virtual:**
 
 ```bash
-# Aplicar migraciones
-python manage.py migrate
+   # Windows
+   python -m venv venv
+   .\venv\Scripts\activate
 
-# Crear superusuario (admin)
+   # Linux / Mac
+   python3 -m venv venv
+   source venv/bin/activate
+
+```
+
+3. **Instalar dependencias:**
+
+```bash
+   pip install -r requirements.txt
+
+```
+
+## Ejecución local
+
+1. **Preparar la base de datos:**
+
+```bash
+   python manage.py migrate
+
+```
+
+2. **Iniciar el servidor:**
+```bash
+python manage.py runserver
+
+```
+
+
+
+La API será accesible en `http://localhost:8000/api`.
+
+## Base de datos
+
+El sistema está configurado para usar **PostgreSQL**. Debes crear una base de datos llamada `ruratec_db` (o el nombre que prefieras) y configurar las credenciales en el archivo `.env`. Para pruebas rápidas sin configurar Postgres, Django puede utilizar SQLite por defecto si se modifica el `settings.py`.
+
+## Variables de entorno
+
+Crea un archivo `.env` en la raíz con la siguiente información:
+
+```env
+SECRET_KEY=tu_clave_secreta
+DEBUG=True
+DATABASE_URL=postgresql://usuario:password@localhost:5432/ruratec_db
+JWT_SECRET_KEY=tu_jwt_secret
+COMMISSION_RATE=0.04
+WHATSAPP_BASE_URL=https://wa.me/
+
+```
+
+## Usuario de prueba
+
+Para acceder al panel administrativo y gestionar datos iniciales:
+
+1. **Crear superusuario:**
+```bash
 python manage.py createsuperuser
 
-# Correr el servidor de desarrollo
-python manage.py runserver
 ```
 
-La API estará disponible en `http://localhost:8000/api`.
 
-El panel de administración estará en `http://localhost:8000/admin`.
+2. **Acceso Admin:** `http://localhost:8000/admin`
 
----
+## Despliegue
 
-## 🗂️ Estructura del proyecto
+El backend está diseñado para ser desplegado en plataformas como **Render**, **Railway** o **Heroku**.
+
+* Asegúrate de cambiar `DEBUG=False` y configurar los `ALLOWED_HOSTS` con el dominio de producción.
+
+## Evidencias
+
+* **Endpoints de Auth:** Registro y Login con JWT funcionando.
+* **CRUD de Productos:** Gestión completa de inventario agrícola.
+* **Módulo de Pagos:** Cálculo y registro de transacciones con la comisión aplicada.
 
 ```
-Backend/
-├── ruratec/             # Configuración principal del proyecto Django
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── users/               # App de usuarios (agricultores y comerciantes)
-│   ├── models.py
-│   ├── views.py
-│   ├── serializers.py
-│   └── urls.py
-├── products/            # App de productos agrícolas
-│   ├── models.py
-│   ├── views.py
-│   ├── serializers.py
-│   └── urls.py
-├── payments/            # App de pagos y comisiones
-│   ├── models.py
-│   ├── views.py
-│   └── urls.py
-├── requirements.txt
-└── manage.py
+
 ```
-
----
-
-## 📡 Endpoints principales
-
-### Autenticación
-| Método | Endpoint | Descripción |
-|---|---|---|
-| `POST` | `/api/auth/register/` | Registro de nuevo usuario |
-| `POST` | `/api/auth/login/` | Inicio de sesión, retorna JWT |
-| `POST` | `/api/auth/refresh/` | Renovar token de acceso |
-
-### Usuarios
-| Método | Endpoint | Descripción |
-|---|---|---|
-| `GET` | `/api/users/me/` | Perfil del usuario autenticado |
-| `PUT` | `/api/users/me/` | Actualizar perfil |
-
-### Productos
-| Método | Endpoint | Descripción |
-|---|---|---|
-| `GET` | `/api/products/` | Listar todos los productos |
-| `POST` | `/api/products/` | Publicar nuevo producto (agricultor) |
-| `GET` | `/api/products/{id}/` | Detalle de un producto |
-| `PUT` | `/api/products/{id}/` | Editar producto |
-| `DELETE` | `/api/products/{id}/` | Eliminar producto |
-
-### Pagos
-| Método | Endpoint | Descripción |
-|---|---|---|
-| `POST` | `/api/payments/checkout/` | Iniciar pago de una transacción |
-| `GET` | `/api/payments/history/` | Historial de pagos del usuario |
-
-> La comisión del **4%** se aplica automáticamente en cada transacción procesada.
-
----
-
-## ✨ Funcionalidades principales
-
-- **Registro por rol** — Usuarios se registran como agricultor o comerciante
-- **Gestión de productos** — CRUD completo de productos con fotos, precio y descripción
-- **Integración WhatsApp** — Generación de enlace directo para contactar al agricultor
-- **Procesamiento de pagos** — Flujo de pago con comisión del 4% aplicada automáticamente
-- **Autenticación JWT** — Tokens de acceso seguros con expiración y refresh
-
----
-
-## 🔗 Conexión con el Frontend
-
-Este backend es consumido por el frontend de Ruratec.
-
-- Repositorio del frontend: [https://github.com/Xavizooo/frontend-proyecto](https://github.com/Xavizooo/frontend-proyecto)
-- CORS configurado para `http://localhost:3000` en desarrollo
-
----
-
-## 🤝 Contribuciones
-
-1. Haz fork del repositorio
-2. Crea una rama: `git checkout -b feature/nueva-funcionalidad`
-3. Haz commit de tus cambios: `git commit -m 'feat: descripción del cambio'`
-4. Push a tu rama: `git push origin feature/nueva-funcionalidad`
-5. Abre un Pull Request
-
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la licencia MIT.
